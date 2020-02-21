@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "10592940294",
+    "firebase_url": "https://myreel-ad82a.firebaseio.com",
+    "project_id": "myreel-ad82a",
+    "storage_bucket": "myreel-ad82a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10592940294:android:240404dbad0ababd032e87",
+        "android_client_info": {
+          "package_name": "dx.queen.myreel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10592940294-9cbdkpcn0pu3s1cgudrkpk3m2htj70bk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dx.queen.myreel",
+            "certificate_hash": "1adc9f9e1e93733a4d7a84039d4912a519144ee1"
+          }
+        },
+        {
+          "client_id": "10592940294-9frcgvmkr9s2cntegfie1h440tfogm68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoaSufBwkH0aMU2ua9bPz7ARUt9Ql2A-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10592940294-9frcgvmkr9s2cntegfie1h440tfogm68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
