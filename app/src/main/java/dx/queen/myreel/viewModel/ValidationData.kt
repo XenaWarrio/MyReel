@@ -19,10 +19,11 @@ class ValidationData {
         fun validatePassword(password:String?): Int{
            val resultOfPasswordValidation =
                commonValidation(password, 10)
+            val regex ="^(?=.*[A-Z])(?=.*[0-9])[A-Z0-9]+$"
 
             return if (resultOfPasswordValidation != R.string.ok) {
                 resultOfPasswordValidation
-            }else if (!password!!.contains("^(?=.*[a-zA-Z])(?=.*[0-9])")) {
+            }else if (regex.matches(password!!.toRegex())) {
                 R.string.password_should_contains
             }else{
                 R.string.ok

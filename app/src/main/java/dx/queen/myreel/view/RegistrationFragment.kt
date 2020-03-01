@@ -12,13 +12,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import dx.queen.myreel.R
+import com.google.android.material.datepicker.MaterialDatePicker
 import dx.queen.myreel.databinding.FragmentRegistrationBinding
 import dx.queen.myreel.viewModel.RegistrationViewModel
+import java.text.DateFormat
+import java.util.*
+
 
 class RegistrationFragment : Fragment() {
 
-    private lateinit var registrationBinding : FragmentRegistrationBinding
+    private lateinit var registrationBinding: FragmentRegistrationBinding
     private var selectedPhotoUrl: String? = null
     private val activity = MainActivity()
 
@@ -29,7 +32,7 @@ class RegistrationFragment : Fragment() {
     ): View? {
         registrationBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_registration, container, false
+            dx.queen.myreel.R.layout.fragment_registration, container, false
         )
         val view = registrationBinding.root
         registrationBinding.lifecycleOwner = this
@@ -43,7 +46,7 @@ class RegistrationFragment : Fragment() {
         registrationBinding.viewModel = viewModel
 
         val haveAnAccount = Observer<String> {
-            activity.navigate(R.id.authorizationFragment)
+            activity.navigate(dx.queen.myreel.R.id.authorizationFragment)
         }
 
         val dateOfBirthObserver = Observer<String> { date ->
@@ -51,8 +54,7 @@ class RegistrationFragment : Fragment() {
         }
 
         val fragmentDatePicker = Observer<String> {
-            val dateFragment = DatePickerFragment()
-            dateFragment.show(parentFragmentManager, "Date Picker")
+            openDatePicker(viewModel)
         }
 
         val clearAllFields = Observer<String> {
@@ -63,25 +65,30 @@ class RegistrationFragment : Fragment() {
 
         }
 
-        val emailErrorObserver = Observer<String> { error ->
-            registrationBinding.userEmail.error = error
+        if (context != null) {
 
+            val emailErrorObserver = Observer<Int> { error ->
+                registrationBinding.userEmail.error = context!!.resources.getText(error)
+
+            }
+            val passwordErrorObserver = Observer<Int> { error ->
+                registrationBinding.userPassword.error = context!!.resources.getText(error)
+
+            }
+            val userNameErrorObserver = Observer<Int> { error ->
+                registrationBinding.userName.error = context!!.resources.getText(error)
+
+            }
+
+
+
+            viewModel.emailError.observe(this, emailErrorObserver)
+            viewModel.passwordError.observe(this, passwordErrorObserver)
+            viewModel.usernameError.observe(this, userNameErrorObserver)
         }
-        val passwordErrorObserver = Observer<String> { error ->
-            registrationBinding.userPassword.error = error
-
-        }
-        val userNameErrorObserver = Observer<String> { error ->
-            registrationBinding.userName.error = error
-
-        }
-
 
         viewModel.clearAllFields.observe(this, clearAllFields)
 
-        viewModel.emailError.observe(this, emailErrorObserver)
-        viewModel.passwordError.observe(this, passwordErrorObserver)
-        viewModel.usernameError.observe(this, userNameErrorObserver)
 
         viewModel.dateOfBirth.observe(this, dateOfBirthObserver)
 
@@ -114,6 +121,24 @@ class RegistrationFragment : Fragment() {
             }
 
         }
+    }
+
+   private fun openDatePicker(viewModel: RegistrationViewModel) {
+
+        val calendar = Calendar.getInstance()
+        val builder: MaterialDatePicker.Builder<Long> =
+            MaterialDatePicker.Builder.datePicker().setTitleText(dx.queen.myreel.R.string.dateOfBirth)
+                .setSelection(calendar.timeInMillis)
+
+        builder.setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
+        val picker: MaterialDatePicker<Long> = builder.build()
+
+        picker.addOnPositiveButtonClickListener { data ->
+            val dateOfBirth = DateFormat.getDateInstance().format(data)
+            viewModel.dateOfBirth.value = dateOfBirth
+        }
+
+        picker.show(parentFragmentManager, picker.toString())
     }
 
 }

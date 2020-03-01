@@ -14,6 +14,7 @@ import java.util.*
 class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
 
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -21,7 +22,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         return DatePickerDialog(context,
-            R.style.MyReelDatePickerSpinnerStyle,this, year, month ,day)
+            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar,this, year, month ,day)
     }
 
 

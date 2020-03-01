@@ -25,11 +25,11 @@ class RegistrationViewModel:  ViewModel()  {
     var haveAnAccount = MutableLiveData<String>()
 
 
-    var emailError = MutableLiveData<String>()
-    var passwordError = MutableLiveData<String>()
-    var usernameError = MutableLiveData<String>()
+    var emailError = MutableLiveData<Int>()
+    var passwordError = MutableLiveData<Int>()
+    var usernameError = MutableLiveData<Int>()
 
-    //var dateOfBirthError = MutableLiveData<String>()
+    //var dateOfBirthError = MutableLiveData<Int>()
 
     var dateFragment = MutableLiveData<String>()
 
@@ -57,6 +57,7 @@ class RegistrationViewModel:  ViewModel()  {
 
 
     private fun checkIsCorrect():Boolean{
+
         val resultEmail = ValidationData.validateEmail(email.value)
         val resultPassword =
             ValidationData.validatePassword(password.value)
@@ -67,10 +68,10 @@ class RegistrationViewModel:  ViewModel()  {
         var isDataCorrect = false
 
         when {
-            resultEmail != R.string.ok -> emailError.value = resultEmail.toString()
-            resultPassword != R.string.ok -> passwordError.value = resultPassword.toString()
+            resultEmail != R.string.ok -> emailError.value = resultEmail
+            resultPassword != R.string.ok -> passwordError.value = resultPassword
 //            resultDate != R.string.ok -> dateOfBirthError.value = resultDate.toString()
-            resultUserName != R.string.ok -> usernameError.value = resultUserName.toString()
+            resultUserName != R.string.ok -> usernameError.value = resultUserName
             else -> isDataCorrect = true
         }
 
