@@ -4,10 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,7 +23,6 @@ import java.util.*
 class RegistrationFragment : Fragment() {
 
     private lateinit var registrationBinding: FragmentRegistrationBinding
-    private var selectedPhotoUrl: String? = null
     private val activity = MainActivity()
 
     override fun onCreateView(
@@ -46,7 +46,7 @@ class RegistrationFragment : Fragment() {
         registrationBinding.viewModel = viewModel
 
         val haveAnAccount = Observer<String> {
-            activity.navigate(dx.queen.myreel.R.id.authorizationFragment)
+            activity.navigateToAutorization()
         }
 
         val dateOfBirthObserver = Observer<String> { date ->
@@ -80,11 +80,17 @@ class RegistrationFragment : Fragment() {
 
             }
 
+            val userAuthErrorObserver = Observer<String> { error ->
+                makeText(context, error , Toast.LENGTH_LONG).show()
+            }
+
 
 
             viewModel.emailError.observe(this, emailErrorObserver)
             viewModel.passwordError.observe(this, passwordErrorObserver)
             viewModel.usernameError.observe(this, userNameErrorObserver)
+
+            viewModel.authError.observe(this , userAuthErrorObserver)
         }
 
         viewModel.clearAllFields.observe(this, clearAllFields)
@@ -100,9 +106,9 @@ class RegistrationFragment : Fragment() {
             intent.type = "image/*"
             startActivityForResult(intent, 0)
 
+
         }
 
-        viewModel.imageUrl.value = selectedPhotoUrl
 
     }
 
@@ -110,14 +116,14 @@ class RegistrationFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             val selectedPhotoUri = data.data
-            Log.d("TEST", "$context")
             val bitmap =
                 MediaStore.Images.Media.getBitmap(context!!.contentResolver, selectedPhotoUri)
             registrationBinding.selectedImageView.setImageBitmap(bitmap)
             registrationBinding.btProfilePhoto.alpha = 0f
 
             if (selectedPhotoUri != null) {
-                selectedPhotoUrl = selectedPhotoUri.toString()
+                registrationBinding.viewModel!!.imageUrl.value = selectedPhotoUri.toString()
+
             }
 
         }

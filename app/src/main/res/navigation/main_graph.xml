@@ -7,13 +7,17 @@
     <fragment
         android:id="@+id/registrationFragment"
         android:name="dx.queen.myreel.view.RegistrationFragment"
-        android:label="RegistrationFragment" />
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_authorizationFragment"
+            app:destination="@id/authorizationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/authorizationFragment"
         android:name="dx.queen.myreel.view.AuthorizationFragment"
         android:label="AuthorizationFragment" />
-    <fragment
-        android:id="@+id/datePickerFragment"
-        android:name="dx.queen.myreel.view.DatePickerFragment"
-        android:label="DatePickerFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/datePickerFragment"-->
+<!--        android:name="dx.queen.myreel.view.DatePickerFragment"-->
+<!--        android:label="DatePickerFragment" />-->
 </navigation>

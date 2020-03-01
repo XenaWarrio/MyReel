@@ -25,7 +25,12 @@ class MainActivity : AppCompatActivity() {
         navigate(registrationFragment)
     }
 
-    fun navigate(fragment: Int) {
+    fun navigateToAutorization(){
+        navController.navigate(R.id.action_registrationFragment_to_authorizationFragment)
+    }
+
+    private fun navigate(fragment: Int) {
+
         navController.navigate(fragment)
     }
 

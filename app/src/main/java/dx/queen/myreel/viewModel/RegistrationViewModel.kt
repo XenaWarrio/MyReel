@@ -29,11 +29,12 @@ class RegistrationViewModel:  ViewModel()  {
     var passwordError = MutableLiveData<Int>()
     var usernameError = MutableLiveData<Int>()
 
-    //var dateOfBirthError = MutableLiveData<Int>()
 
     var dateFragment = MutableLiveData<String>()
 
     var clearAllFields = MutableLiveData<String>()
+
+    var authError  = MutableLiveData<String>()
 
 
 
@@ -42,8 +43,15 @@ class RegistrationViewModel:  ViewModel()  {
         if(!checkIsCorrect()){
             return
         }
-        clearAllFields.value = "clear"
+
         repository.createNewUser(email.value!!, password.value!! , username.value!! , imageUrl.value , dateOfBirth.value!!)
+        repository.authError.observeForever {
+            authError.value = it
+        }
+
+
+        clearAllFields.value = "clear" //  + IMAGE VIEW CLEAR!
+
     }
 
     fun pickADate(){
@@ -61,7 +69,6 @@ class RegistrationViewModel:  ViewModel()  {
         val resultEmail = ValidationData.validateEmail(email.value)
         val resultPassword =
             ValidationData.validatePassword(password.value)
-//        val resultDate = ValidationData.validateDate(dateOfBirth.value)
         val resultUserName =
             ValidationData.validateUserName(username.value)
 
@@ -70,7 +77,6 @@ class RegistrationViewModel:  ViewModel()  {
         when {
             resultEmail != R.string.ok -> emailError.value = resultEmail
             resultPassword != R.string.ok -> passwordError.value = resultPassword
-//            resultDate != R.string.ok -> dateOfBirthError.value = resultDate.toString()
             resultUserName != R.string.ok -> usernameError.value = resultUserName
             else -> isDataCorrect = true
         }
