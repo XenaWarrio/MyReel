@@ -1,20 +1,25 @@
 package dx.queen.myreel.viewModel
 
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import dx.queen.myreel.R
 import dx.queen.myreel.models.FullUserInformation
 import dx.queen.myreel.repository.Repository
 
 
-class RegistrationViewModel:  ViewModel()  {
+class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository  = Repository()
+
+    private val repository = Repository()
     val user: MutableLiveData<FullUserInformation> by lazy {
         MutableLiveData<FullUserInformation>()
     }
 
+
+
+    var isInternetAvailable = MutableLiveData<Boolean>()
 
 
     var email = MutableLiveData<String>()
@@ -34,17 +39,21 @@ class RegistrationViewModel:  ViewModel()  {
 
     var clearAllFields = MutableLiveData<String>()
 
-    var authError  = MutableLiveData<String>()
+    var authError = MutableLiveData<String>()
 
 
-
-
-    fun onClick(){
-        if(!checkIsCorrect()){
+    fun onClick() {
+        if (!checkIsCorrect()) {
             return
         }
 
-        repository.createNewUser(email.value!!, password.value!! , username.value!! , imageUrl.value , dateOfBirth.value!!)
+        repository.createNewUser(
+            email.value!!,
+            password.value!!,
+            username.value!!,
+            imageUrl.value,
+            dateOfBirth.value!!
+        )
         repository.authError.observeForever {
             authError.value = it
         }
@@ -54,17 +63,16 @@ class RegistrationViewModel:  ViewModel()  {
 
     }
 
-    fun pickADate(){
+    fun pickADate() {
         dateFragment.value = "open"
     }
 
-    fun haveAnAccount(){
+    fun haveAnAccount() {
         haveAnAccount.value = "yes"
     }
 
 
-
-    private fun checkIsCorrect():Boolean{
+    private fun checkIsCorrect(): Boolean {
 
         val resultEmail = ValidationData.validateEmail(email.value)
         val resultPassword =
@@ -83,7 +91,6 @@ class RegistrationViewModel:  ViewModel()  {
 
         return isDataCorrect
     }
-
 
 
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
+import dx.queen.myreel.R
 import dx.queen.myreel.databinding.FragmentRegistrationBinding
 import dx.queen.myreel.viewModel.RegistrationViewModel
 import java.text.DateFormat
@@ -22,8 +23,9 @@ import java.util.*
 
 class RegistrationFragment : Fragment() {
 
+
     private lateinit var registrationBinding: FragmentRegistrationBinding
-    private val activity = MainActivity()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,8 +34,9 @@ class RegistrationFragment : Fragment() {
     ): View? {
         registrationBinding = DataBindingUtil.inflate(
             inflater,
-            dx.queen.myreel.R.layout.fragment_registration, container, false
+            R.layout.fragment_registration, container, false
         )
+
         val view = registrationBinding.root
         registrationBinding.lifecycleOwner = this
 
@@ -42,11 +45,14 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
         registrationBinding.viewModel = viewModel
 
+
         val haveAnAccount = Observer<String> {
-            activity.navigateToAutorization()
+            val ac = activity as MainActivity
+            ac.navigateToRegistration()
         }
 
         val dateOfBirthObserver = Observer<String> { date ->
@@ -65,6 +71,11 @@ class RegistrationFragment : Fragment() {
 
         }
 
+        viewModel.clearAllFields.observe(this, clearAllFields)
+        viewModel.dateOfBirth.observe(this, dateOfBirthObserver)
+        viewModel.dateFragment.observe(this, fragmentDatePicker)
+        viewModel.haveAnAccount.observe(this, haveAnAccount)
+
         if (context != null) {
 
             val emailErrorObserver = Observer<Int> { error ->
@@ -81,25 +92,16 @@ class RegistrationFragment : Fragment() {
             }
 
             val userAuthErrorObserver = Observer<String> { error ->
-                makeText(context, error , Toast.LENGTH_LONG).show()
+                makeText(context, error, Toast.LENGTH_LONG).show()
             }
-
 
 
             viewModel.emailError.observe(this, emailErrorObserver)
             viewModel.passwordError.observe(this, passwordErrorObserver)
             viewModel.usernameError.observe(this, userNameErrorObserver)
-
-            viewModel.authError.observe(this , userAuthErrorObserver)
+            viewModel.authError.observe(this, userAuthErrorObserver)
         }
 
-        viewModel.clearAllFields.observe(this, clearAllFields)
-
-
-        viewModel.dateOfBirth.observe(this, dateOfBirthObserver)
-
-        viewModel.dateFragment.observe(this, fragmentDatePicker)
-        viewModel.haveAnAccount.observe(this, haveAnAccount)
 
         registrationBinding.btProfilePhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -109,8 +111,8 @@ class RegistrationFragment : Fragment() {
 
         }
 
-
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -129,11 +131,12 @@ class RegistrationFragment : Fragment() {
         }
     }
 
-   private fun openDatePicker(viewModel: RegistrationViewModel) {
+    private fun openDatePicker(viewModel: RegistrationViewModel) {
 
         val calendar = Calendar.getInstance()
         val builder: MaterialDatePicker.Builder<Long> =
-            MaterialDatePicker.Builder.datePicker().setTitleText(dx.queen.myreel.R.string.dateOfBirth)
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText(dx.queen.myreel.R.string.dateOfBirth)
                 .setSelection(calendar.timeInMillis)
 
         builder.setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)

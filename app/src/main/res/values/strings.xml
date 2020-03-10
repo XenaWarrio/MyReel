@@ -10,6 +10,7 @@
     <string name="dateOfBirth"> дата рождения </string>
     <string name="sign_in"> Войти </string>
     <string name="verifyEmail"> Пожалуйста зайдите в свою почту и потвердите свой email </string>
+    <string name="no_connection"> нет подключения к интернету </string>
 
 
     <string name="cant_be_empty"> не может быть пустым! </string>

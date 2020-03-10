@@ -1,6 +1,5 @@
 package dx.queen.myreel.repository
 
-import android.util.Log
 import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -19,30 +18,20 @@ class RegistrationRepository(
     private val password = passwordForSaving
     private val userName = username
     private val urlImage = imageUrl
-    private val dateOfBirth  = date
+    private val dateOfBirth = date
     private val defaultImageUri = "android.resource://dx.queen.myreel/drawable/voldemort"
 
 
     fun performRegister() {
-
-        Log.d("VERIFY_EMAIL" , "HERE")
-
-
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                Log.d("VERIFY_EMAIL" , "onComplete")
 
                 if (!it.isSuccessful) return@addOnCompleteListener
-                val useri =  FirebaseAuth.getInstance().currentUser
-                Log.d("VERIFY_EMAIL" , "useri = $useri")
+                val userCurrent = FirebaseAuth.getInstance().currentUser
 
+                userCurrent!!.sendEmailVerification()
 
-                useri!!.sendEmailVerification()
-                Log.d("VERIFY_EMAIL" , "after send email verify")
-                Log.d("VERIFY_EMAIL" , "after send isemail ${useri.isEmailVerified}")
-
-                if(useri.isEmailVerified) {
-                    Log.d("VERIFY_EMAIL" , "true")
+                if (userCurrent.isEmailVerified) {
                     uploadImageToFirebaseStorage()
                 }
             }
@@ -104,7 +93,6 @@ class RegistrationRepository(
             }
             .addOnFailureListener {
             }
-
 
 
     }

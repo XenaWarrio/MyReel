@@ -9,12 +9,12 @@
         android:name="dx.queen.myreel.view.RegistrationFragment"
         android:label="RegistrationFragment" >
         <action
-            android:id="@+id/action_registrationFragment_to_authorizationFragment"
+            android:id="@+id/action_registrationFragment_to_loginFragment"
             app:destination="@id/authorizationFragment" />
     </fragment>
     <fragment
         android:id="@+id/authorizationFragment"
-        android:name="dx.queen.myreel.view.AuthorizationFragment"
+        android:name="dx.queen.myreel.view.LoginFragment"
         android:label="AuthorizationFragment" />
 <!--    <fragment-->
 <!--        android:id="@+id/datePickerFragment"-->
