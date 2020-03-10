@@ -45,14 +45,19 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val ac = activity as MainActivity
+
 
         val viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
         registrationBinding.viewModel = viewModel
 
 
         val haveAnAccount = Observer<String> {
-            val ac = activity as MainActivity
-            ac.navigateToRegistration()
+            ac.navigateToLogin()
+        }
+
+        val confirmEmail = Observer<String> {
+            ac.navigateToVerifyEmail()
         }
 
         val dateOfBirthObserver = Observer<String> { date ->
@@ -75,6 +80,7 @@ class RegistrationFragment : Fragment() {
         viewModel.dateOfBirth.observe(this, dateOfBirthObserver)
         viewModel.dateFragment.observe(this, fragmentDatePicker)
         viewModel.haveAnAccount.observe(this, haveAnAccount)
+        viewModel.authConfirmEmail.observe(this, confirmEmail)
 
         if (context != null) {
 

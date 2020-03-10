@@ -1,26 +1,20 @@
 package dx.queen.myreel.viewModel
 
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import dx.queen.myreel.R
 import dx.queen.myreel.models.FullUserInformation
 import dx.queen.myreel.repository.Repository
 
 
-class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
+class RegistrationViewModel : ViewModel() {
 
 
     private val repository = Repository()
     val user: MutableLiveData<FullUserInformation> by lazy {
         MutableLiveData<FullUserInformation>()
     }
-
-
-
-    var isInternetAvailable = MutableLiveData<Boolean>()
-
 
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
@@ -40,6 +34,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     var clearAllFields = MutableLiveData<String>()
 
     var authError = MutableLiveData<String>()
+    var authConfirmEmail = MutableLiveData<String>()
 
 
     fun onClick() {
@@ -54,8 +49,13 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
             imageUrl.value,
             dateOfBirth.value!!
         )
+
         repository.authError.observeForever {
             authError.value = it
+        }
+
+        repository.authConfirmEmail.observeForever {
+            authConfirmEmail.value = it
         }
 
 
@@ -91,6 +91,5 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
         return isDataCorrect
     }
-
 
 }

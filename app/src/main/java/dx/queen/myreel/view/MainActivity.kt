@@ -16,7 +16,7 @@ import dx.queen.myreel.broadcast.ConnectivityReceiver
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
     private val registrationFragment = R.id.registrationFragment
-    private val authorizationFragment = R.id.authorizationFragment
+    private val loginFragment = R.id.loginFragment
 
     private lateinit var wManager: WindowManager
     private lateinit var viewL: View
@@ -46,8 +46,16 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
     }
 
 
-    fun navigateToRegistration() {
+    fun navigateToLogin() {
         navController.navigate(R.id.action_registrationFragment_to_loginFragment)
+    }
+
+    fun navigateToVerifyEmail() {
+        navController.navigate(R.id.action_registrationFragment_to_verifyEmailFragment)
+    }
+
+    fun navigateToAppMenu() {
+        navController.navigate(R.id.action_verifyEmailFragment_to_menuFragment)
     }
 
     private fun navigate(fragment: Int) {

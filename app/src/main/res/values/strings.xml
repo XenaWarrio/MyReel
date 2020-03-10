@@ -12,6 +12,9 @@
     <string name="verifyEmail"> Пожалуйста зайдите в свою почту и потвердите свой email </string>
     <string name="no_connection"> нет подключения к интернету </string>
 
+    <string name="done"> готово </string>
+    <string name="back"> назад </string>
+
 
     <string name="cant_be_empty"> не может быть пустым! </string>
     <string name="ok">ok</string>
