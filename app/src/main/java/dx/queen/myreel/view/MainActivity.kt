@@ -10,8 +10,8 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import dx.queen.myreel.broadcast.ConnectivityReceiver
 import dx.queen.myreel.R
+import dx.queen.myreel.broadcast.ConnectivityReceiver
 
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -91,4 +91,8 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         ConnectivityReceiver.connectivityReceiverListener = this
     }
 
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(ConnectivityReceiver())
+    }
 }
