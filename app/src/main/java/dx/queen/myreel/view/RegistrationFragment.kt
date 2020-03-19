@@ -57,7 +57,8 @@ class RegistrationFragment : Fragment() {
         }
 
         val confirmEmail = Observer<String> {
-            ac.navigateToVerifyEmail()
+            makeText(context, R.string.verifyEmail, Toast.LENGTH_LONG).show()
+            ac.navigateToLogin()
         }
 
         val dateOfBirthObserver = Observer<String> { date ->
@@ -73,14 +74,15 @@ class RegistrationFragment : Fragment() {
             registrationBinding.userPassword.text.clear()
             registrationBinding.userName.text.clear()
             registrationBinding.dateOfBirth.text = ""
+            //registrationBinding.selectedImageView.
 
         }
 
-        viewModel.clearAllFields.observe(this, clearAllFields)
-        viewModel.dateOfBirth.observe(this, dateOfBirthObserver)
-        viewModel.dateFragment.observe(this, fragmentDatePicker)
-        viewModel.haveAnAccount.observe(this, haveAnAccount)
-        viewModel.authConfirmEmail.observe(this, confirmEmail)
+        viewModel.clearAllFields.observe(viewLifecycleOwner, clearAllFields)
+        viewModel.dateOfBirth.observe(viewLifecycleOwner, dateOfBirthObserver)
+        viewModel.dateFragment.observe(viewLifecycleOwner, fragmentDatePicker)
+        viewModel.haveAnAccount.observe(viewLifecycleOwner, haveAnAccount)
+        viewModel.haveToConfirmEmail.observe(viewLifecycleOwner, confirmEmail)
 
         if (context != null) {
 
@@ -102,10 +104,10 @@ class RegistrationFragment : Fragment() {
             }
 
 
-            viewModel.emailError.observe(this, emailErrorObserver)
-            viewModel.passwordError.observe(this, passwordErrorObserver)
-            viewModel.usernameError.observe(this, userNameErrorObserver)
-            viewModel.authError.observe(this, userAuthErrorObserver)
+            viewModel.emailError.observe(viewLifecycleOwner, emailErrorObserver)
+            viewModel.passwordError.observe(viewLifecycleOwner, passwordErrorObserver)
+            viewModel.usernameError.observe(viewLifecycleOwner, userNameErrorObserver)
+            viewModel.authError.observe(viewLifecycleOwner, userAuthErrorObserver)
         }
 
 
@@ -113,8 +115,6 @@ class RegistrationFragment : Fragment() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
-
-
         }
 
     }

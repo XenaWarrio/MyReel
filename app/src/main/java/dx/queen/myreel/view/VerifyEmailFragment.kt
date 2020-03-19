@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,10 +27,12 @@ class VerifyEmailFragment : Fragment() {
         val viewModel = ViewModelProvider(this).get(VerifyEmailViewModel::class.java)
         val ac = activity as MainActivity
 
-
-        bt_done.setOnClickListener {
-            progressBar_invisible.visibility = ProgressBar.VISIBLE
-            viewModel.isEmailVerifiedFun() }
+//        viewModel.isEmailVerifiedFun()
+//
+//
+//        bt_done.setOnClickListener {
+//            progressBar_invisible.visibility = ProgressBar.VISIBLE
+//            viewModel.isEmailVerifiedFun() }
 
         bt_back.setOnClickListener {
 

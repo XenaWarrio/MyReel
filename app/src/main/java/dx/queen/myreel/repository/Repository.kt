@@ -5,13 +5,16 @@ import com.google.firebase.auth.FirebaseAuth
 
 class Repository {
 
-    val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
+    var authFailedForRegistration = MutableLiveData<String>()
+    var authHaveToConfirmEmailForRegistration = MutableLiveData<String>()
+
+    var emailNotConfirmedForLogin = MutableLiveData<String>()
+    var authFireBaseFailedForLogin = MutableLiveData<String>()
+    var authSucceedForLogin = MutableLiveData<String>()
 
 
-    var authError = MutableLiveData<String>()
-    var authConfirmEmail = MutableLiveData<String>()
-
-    var isEmailConfirmed = MutableLiveData<Boolean>()
 
 
     fun createNewUser(
@@ -21,7 +24,7 @@ class Repository {
         uri: String?,
         date: String
     ) {
-        verifyEmail(emailForSaving, passwordForSaving)
+        sendEmailVerification(emailForSaving, passwordForSaving)
 
 //        val registration =
 //            RegistrationRepository(
@@ -34,20 +37,38 @@ class Repository {
 //        registration.performRegister()
     }
 
-    private fun verifyEmail(email: String, password: String) {
+    private fun sendEmailVerification(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                authConfirmEmail.value = ""
+                authHaveToConfirmEmailForRegistration.value = ""
                 auth.currentUser!!.sendEmailVerification()
-
             }
 
             .addOnFailureListener {
-                authError.value = it.message
+               authFailedForRegistration.value = it.message
             }
     }
 
-    fun isEmailVerified(){
-       isEmailConfirmed.value = auth.currentUser!!.isEmailVerified
+//    fun isEmailVerified() {
+//        val user = FirebaseAuth.getInstance().currentUser
+//        user!!.reload()
+//        //isEmailConfirmed.value = user.isEmailVerified
+//
+//    }
+
+    fun signIn(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnSuccessListener {
+                if (!it.user!!.isEmailVerified) {
+                    emailNotConfirmedForLogin.value = ""
+                }else{
+                    authSucceedForLogin.value = ""
+                }
+            }
+            .addOnFailureListener {
+                authFireBaseFailedForLogin.value = it.message
+            }
+
+
     }
 }

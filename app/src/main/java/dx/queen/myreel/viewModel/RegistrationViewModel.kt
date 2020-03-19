@@ -4,17 +4,16 @@ package dx.queen.myreel.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dx.queen.myreel.R
-import dx.queen.myreel.models.FullUserInformation
 import dx.queen.myreel.repository.Repository
 
 
 class RegistrationViewModel : ViewModel() {
 
-
     private val repository = Repository()
-    val user: MutableLiveData<FullUserInformation> by lazy {
-        MutableLiveData<FullUserInformation>()
-    }
+
+//    val user: MutableLiveData<FullUserInformation> by lazy {
+//        MutableLiveData<FullUserInformation>()
+//    }
 
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
@@ -22,19 +21,18 @@ class RegistrationViewModel : ViewModel() {
     var dateOfBirth = MutableLiveData<String>()
     var imageUrl = MutableLiveData<String>()
     var haveAnAccount = MutableLiveData<String>()
+    var haveToConfirmEmail = MutableLiveData<String>()
 
 
     var emailError = MutableLiveData<Int>()
     var passwordError = MutableLiveData<Int>()
     var usernameError = MutableLiveData<Int>()
+    var authError = MutableLiveData<String>()
 
 
     var dateFragment = MutableLiveData<String>()
 
     var clearAllFields = MutableLiveData<String>()
-
-    var authError = MutableLiveData<String>()
-    var authConfirmEmail = MutableLiveData<String>()
 
 
     fun onClick() {
@@ -50,15 +48,12 @@ class RegistrationViewModel : ViewModel() {
             dateOfBirth.value!!
         )
 
-        repository.authError.observeForever {
+        repository.authFailedForRegistration.observeForever {
             authError.value = it
         }
-
-        repository.authConfirmEmail.observeForever {
-            authConfirmEmail.value = it
+        repository.authHaveToConfirmEmailForRegistration.observeForever {
+            haveToConfirmEmail.value = it
         }
-
-
         clearAllFields.value = "clear" //  + IMAGE VIEW CLEAR!
 
     }
