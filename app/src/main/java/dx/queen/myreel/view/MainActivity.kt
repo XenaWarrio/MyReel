@@ -50,13 +50,14 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         navController.navigate(R.id.action_registrationFragment_to_loginFragment)
     }
 
-    fun navigateToVerifyEmail() {
-        navController.navigate(R.id.action_registrationFragment_to_verifyEmailFragment)
+    fun navigateToRegistration(){
+        navController.navigate(R.id.action_loginFragment_to_registrationFragment)
     }
 
-    fun navigateToAppMenu() {
-        navController.navigate(R.id.action_verifyEmailFragment_to_menuFragment)
-    }
+
+//    fun navigateToAppMenu() {
+//        navController.navigate(R.id.action_verifyEmailFragment_to_menuFragment)
+//    }
 
     private fun navigate(fragment: Int) {
         navController.navigate(fragment)
@@ -99,8 +100,8 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         ConnectivityReceiver.connectivityReceiverListener = this
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         unregisterReceiver(ConnectivityReceiver())
     }
 }

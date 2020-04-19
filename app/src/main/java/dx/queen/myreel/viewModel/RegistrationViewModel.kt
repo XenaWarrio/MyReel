@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dx.queen.myreel.R
 import dx.queen.myreel.repository.Repository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class RegistrationViewModel : ViewModel() {
-
     private val repository = Repository()
 
-//    val user: MutableLiveData<FullUserInformation> by lazy {
-//        MutableLiveData<FullUserInformation>()
+//    val user: MutableLiveData<FullUserInformationForFireBase> by lazy {
+//        MutableLiveData<FullUserInformationForFireBase>()
 //    }
 
     var email = MutableLiveData<String>()
@@ -31,7 +32,6 @@ class RegistrationViewModel : ViewModel() {
 
 
     var dateFragment = MutableLiveData<String>()
-
     var clearAllFields = MutableLiveData<String>()
 
 
@@ -40,21 +40,22 @@ class RegistrationViewModel : ViewModel() {
             return
         }
 
-        repository.createNewUser(
-            email.value!!,
-            password.value!!,
-            username.value!!,
-            imageUrl.value,
-            dateOfBirth.value!!
-        )
-
+        GlobalScope.launch {
+            repository.createNewUser(
+                email.value!!,
+                password.value!!,
+                username.value!!,
+                imageUrl.value,
+                dateOfBirth.value!!
+            )
+        }
         repository.authFailedForRegistration.observeForever {
             authError.value = it
         }
         repository.authHaveToConfirmEmailForRegistration.observeForever {
             haveToConfirmEmail.value = it
         }
-        clearAllFields.value = "clear" //  + IMAGE VIEW CLEAR!
+        clearAllFields.value = "clear"
 
     }
 
@@ -68,7 +69,6 @@ class RegistrationViewModel : ViewModel() {
 
 
     private fun checkIsCorrect(): Boolean {
-
         val resultEmail = ValidationData.validateEmail(email.value)
         val resultPassword =
             ValidationData.validatePassword(password.value)

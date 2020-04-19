@@ -4,8 +4,7 @@ import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import dx.queen.myreel.models.FullUserInformation
-import java.util.*
+import dx.queen.myreel.models.FullUserInformationForFireBase
 
 class RegistrationRepository(
     emailForSaving: String,
@@ -22,43 +21,29 @@ class RegistrationRepository(
     private val defaultImageUri = "android.resource://dx.queen.myreel/drawable/voldemort"
 
 
-    fun performRegister() {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+    fun register() {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-
                 if (!it.isSuccessful) return@addOnCompleteListener
-                val userCurrent = FirebaseAuth.getInstance().currentUser
-
-                userCurrent!!.sendEmailVerification()
-
-                if (userCurrent.isEmailVerified) {
-                    uploadImageToFirebaseStorage()
-                }
+                uploadImageToFireBaseStorage()
             }
-
             .addOnFailureListener {
-
-
             }
 
     }
 
-    private fun uploadImageToFirebaseStorage() {
-        val filename = UUID.randomUUID().toString()
-        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+    private fun uploadImageToFireBaseStorage() {
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        val ref = FirebaseStorage.getInstance().getReference("/images/$userID")
 
         if (urlImage == null) {
             ref.putFile(defaultImageUri.toUri())
                 .addOnSuccessListener {
                     ref.downloadUrl
                         .addOnSuccessListener {
-                            saveUserToFirebaseDatabase(it.toString())
-
+                            saveUserToFireBaseDatabase(it.toString(), userID)
                         }
                 }
-                .addOnFailureListener {
-                }
-
             return
         }
 
@@ -66,21 +51,17 @@ class RegistrationRepository(
             .addOnSuccessListener {
                 ref.downloadUrl
                     .addOnSuccessListener {
-                        saveUserToFirebaseDatabase(it.toString())
-
+                        saveUserToFireBaseDatabase(it.toString(), userID)
                     }
-            }
-            .addOnFailureListener {
             }
 
     }
 
-    private fun saveUserToFirebaseDatabase(imageUrl: String) {
-        val uid = FirebaseAuth.getInstance().uid ?: ""
-        val refDataBase = FirebaseDatabase.getInstance().getReference("/users/$uid")
+    private fun saveUserToFireBaseDatabase(imageUrl: String, userId: String) {
+        val refDataBase = FirebaseDatabase.getInstance().getReference("/users/$userId")
 
-        val user = FullUserInformation(
-            uid,
+        val user = FullUserInformationForFireBase(
+            userId,
             email,
             password,
             userName,
@@ -93,8 +74,6 @@ class RegistrationRepository(
             }
             .addOnFailureListener {
             }
-
-
     }
 
 }

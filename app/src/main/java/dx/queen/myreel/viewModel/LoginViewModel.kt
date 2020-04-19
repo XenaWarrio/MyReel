@@ -5,10 +5,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import dx.queen.myreel.R
 import dx.queen.myreel.repository.Repository
+import dx.queen.myreel.repository.WorkWithDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
 
     private val repository = Repository()
+    private val workWithDatabase = WorkWithDatabase()
+
 
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
@@ -20,16 +26,28 @@ class LoginViewModel : ViewModel() {
     var fireBaseError = MutableLiveData<String>()
     var authSuccess = MutableLiveData<String>()
 
-   private val emailNotConfirmedObserver = Observer<String> {
+    var haveNoAccount = MutableLiveData<String>()
+
+    private val emailNotConfirmedObserver = Observer<String> {
         emailNotConfirmed.value = it
     }
 
-   private val fireBaseErrorObserver = Observer<String> {
+    private val fireBaseErrorObserver = Observer<String> {
         fireBaseError.value = it
     }
 
-   private val authSucceedObserver = Observer<String> {
+    private val authSucceedObserver = Observer<String> {
         authSuccess.value = ""
+        GlobalScope.launch {
+            val job = async {
+                repository.getUserInformationFromFireBase()
+            }
+            job.await()?.let{user->
+                launch {
+                    workWithDatabase.saveUserToDB(user)
+                }
+            }
+        }
     }
 
 
@@ -41,6 +59,10 @@ class LoginViewModel : ViewModel() {
         repository.emailNotConfirmedForLogin.observeForever(emailNotConfirmedObserver)
         repository.authFireBaseFailedForLogin.observeForever(fireBaseErrorObserver)
         repository.authSucceedForLogin.observeForever(authSucceedObserver)
+    }
+
+    fun haveNoAccount(){
+        haveNoAccount.value = "yes"
     }
 
     private fun checkIsCorrect(): Boolean {

@@ -58,11 +58,13 @@ class LoginFragment : Fragment() {
             makeText(context, R.string.verifyEmailError, Toast.LENGTH_LONG).show()
         }
 
-
         val signInSuccess = Observer<String> {
             makeText(context, "SUCCESS", Toast.LENGTH_LONG).show()
-
             // turn main fragment
+        }
+
+        val toRegistration = Observer<String>{
+            ac.navigateToRegistration()
         }
 
         viewModel.emailError.observe(viewLifecycleOwner, emailError)
@@ -70,5 +72,6 @@ class LoginFragment : Fragment() {
         viewModel.fireBaseError.observe(viewLifecycleOwner, fireBaseError)
         viewModel.emailNotConfirmed.observe(viewLifecycleOwner, emailNotConfirmed)
         viewModel.authSuccess.observe(viewLifecycleOwner, signInSuccess)
+        viewModel.haveNoAccount.observe(viewLifecycleOwner, toRegistration)
     }
 }

@@ -133,7 +133,6 @@ class RegistrationFragment : Fragment() {
                 registrationBinding.viewModel!!.imageUrl.value = selectedPhotoUri.toString()
 
             }
-
         }
     }
 
