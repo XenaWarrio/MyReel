@@ -11,10 +11,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
-
     private val repository = Repository()
     private val workWithDatabase = WorkWithDatabase()
-
 
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
@@ -31,7 +29,6 @@ class LoginViewModel : ViewModel() {
     private val emailNotConfirmedObserver = Observer<String> {
         emailNotConfirmed.value = it
     }
-
     private val fireBaseErrorObserver = Observer<String> {
         fireBaseError.value = it
     }
@@ -53,7 +50,6 @@ class LoginViewModel : ViewModel() {
 
     fun signIn() {
         if (!checkIsCorrect()) return
-
         repository.signIn(email.value!!, password.value!!)
 
         repository.emailNotConfirmedForLogin.observeForever(emailNotConfirmedObserver)
@@ -66,20 +62,16 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun checkIsCorrect(): Boolean {
-
         val resultEmail =
             ValidationData.validateEmail(email.value)
         val resultPassword =
             ValidationData.validatePassword(password.value)
-
         var isDataCorrect = false
-
         when {
             resultEmail != R.string.ok -> emailError.value = resultEmail
             resultPassword != R.string.ok -> passwordError.value = resultPassword
             else -> isDataCorrect = true
         }
-
         return isDataCorrect
     }
 

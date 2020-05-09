@@ -12,10 +12,6 @@ import kotlinx.coroutines.launch
 class RegistrationViewModel : ViewModel() {
     private val repository = Repository()
 
-//    val user: MutableLiveData<FullUserInformationForFireBase> by lazy {
-//        MutableLiveData<FullUserInformationForFireBase>()
-//    }
-
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
     var username = MutableLiveData<String>()
@@ -24,22 +20,18 @@ class RegistrationViewModel : ViewModel() {
     var haveAnAccount = MutableLiveData<String>()
     var haveToConfirmEmail = MutableLiveData<String>()
 
-
     var emailError = MutableLiveData<Int>()
     var passwordError = MutableLiveData<Int>()
     var usernameError = MutableLiveData<Int>()
     var authError = MutableLiveData<String>()
 
-
     var dateFragment = MutableLiveData<String>()
     var clearAllFields = MutableLiveData<String>()
-
 
     fun onClick() {
         if (!checkIsCorrect()) {
             return
         }
-
         GlobalScope.launch {
             repository.createNewUser(
                 email.value!!,

@@ -53,12 +53,12 @@ class RegistrationFragment : Fragment() {
 
 
         val haveAnAccount = Observer<String> {
-            ac.navigateToLogin()
+            ac.navigateFromRegistrationToLogin()
         }
 
         val confirmEmail = Observer<String> {
             makeText(context, R.string.verifyEmail, Toast.LENGTH_LONG).show()
-            ac.navigateToLogin()
+            ac.navigateFromRegistrationToLogin()
         }
 
         val dateOfBirthObserver = Observer<String> { date ->
@@ -87,22 +87,21 @@ class RegistrationFragment : Fragment() {
         if (context != null) {
 
             val emailErrorObserver = Observer<Int> { error ->
-                registrationBinding.userEmail.error = context!!.resources.getText(error)
+                registrationBinding.userEmail.error = requireContext().resources.getText(error)
 
             }
             val passwordErrorObserver = Observer<Int> { error ->
-                registrationBinding.userPassword.error = context!!.resources.getText(error)
+                registrationBinding.userPassword.error = requireContext().resources.getText(error)
 
             }
             val userNameErrorObserver = Observer<Int> { error ->
-                registrationBinding.userName.error = context!!.resources.getText(error)
+                registrationBinding.userName.error = requireContext().resources.getText(error)
 
             }
 
             val userAuthErrorObserver = Observer<String> { error ->
                 makeText(context, error, Toast.LENGTH_LONG).show()
             }
-
 
             viewModel.emailError.observe(viewLifecycleOwner, emailErrorObserver)
             viewModel.passwordError.observe(viewLifecycleOwner, passwordErrorObserver)
@@ -119,25 +118,22 @@ class RegistrationFragment : Fragment() {
 
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             val selectedPhotoUri = data.data
             val bitmap =
-                MediaStore.Images.Media.getBitmap(context!!.contentResolver, selectedPhotoUri)
+                MediaStore.Images.Media.getBitmap(requireContext().contentResolver, selectedPhotoUri)
             registrationBinding.selectedImageView.setImageBitmap(bitmap)
             registrationBinding.btProfilePhoto.alpha = 0f
 
             if (selectedPhotoUri != null) {
                 registrationBinding.viewModel!!.imageUrl.value = selectedPhotoUri.toString()
-
             }
         }
     }
 
     private fun openDatePicker(viewModel: RegistrationViewModel) {
-
         val calendar = Calendar.getInstance()
         val builder: MaterialDatePicker.Builder<Long> =
             MaterialDatePicker.Builder.datePicker()
@@ -151,7 +147,6 @@ class RegistrationFragment : Fragment() {
             val dateOfBirth = DateFormat.getDateInstance().format(data)
             viewModel.dateOfBirth.value = dateOfBirth
         }
-
         picker.show(parentFragmentManager, picker.toString())
     }
 

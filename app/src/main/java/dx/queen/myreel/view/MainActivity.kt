@@ -4,19 +4,24 @@ import android.content.Context
 import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import dx.queen.myreel.R
 import dx.queen.myreel.broadcast.ConnectivityReceiver
+import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister
+import dx.queen.myreel.viewModel.rvChats.ChatsItem
 
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
     private val registrationFragment = R.id.registrationFragment
-    private val loginFragment = R.id.loginFragment
+
 
     private lateinit var wManager: WindowManager
     private lateinit var viewL: View
@@ -24,43 +29,72 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
     private var isWindowVisible = false
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        SharedPreferencesIsUserRegister.init(this)
         wManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         viewL = layoutInflater.inflate(R.layout.window_no_connection, null)
 
         registerReceiver(
             ConnectivityReceiver(), IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
         )
-
-
         navController = Navigation.findNavController(
             this,
             R.id.nav_host_fragment
         )
-
-        navigate(registrationFragment)
+        if (SharedPreferencesIsUserRegister.read(true)) {
+            navController.navigate(R.id.menuFragment)
+        } else {
+            SharedPreferencesIsUserRegister.write(true)
+            navController.navigate(registrationFragment)
+        }
     }
 
+    fun openCertainChat(chatItems: ChatsItem) {
+        Log.d("VIEW_ERROR", " main activity === chatItem = $chatItems")
 
-    fun navigateToLogin() {
+        val bundle = bundleOf("chatsItem" to chatItems)
+        Log.d("VIEW_ERROR", "" +
+                "$bundle")
+
+        navController.navigate(R.id.action_chatsFragment_to_chatFragment, bundle)
+    }
+
+    fun navigateFromRegistrationToLogin() {
         navController.navigate(R.id.action_registrationFragment_to_loginFragment)
     }
 
-    fun navigateToRegistration(){
-        navController.navigate(R.id.action_loginFragment_to_registrationFragment)
+    fun navigateFromMenuToRegistration() {
+        navController.navigate(R.id.action_menuFragment_to_registrationFragment)
     }
 
+    fun navigateFromMenuToChats() {
+        navController.navigate(R.id.action_menuFragment_to_chatsFragment)
+    }
 
-//    fun navigateToAppMenu() {
-//        navController.navigate(R.id.action_verifyEmailFragment_to_menuFragment)
-//    }
+    fun navigateFromMenuToPersonalInformation() {
+        navController.navigate(R.id.action_menuFragment_to_personalInformation)
+    }
 
-    private fun navigate(fragment: Int) {
-        navController.navigate(fragment)
+    fun navigateFromMenuToSearch() {
+        navController.navigate(R.id.action_menuFragment_to_searchFragment)
+    }
+
+    fun navigateFromLoginToRegistration() {
+        navController.navigate(
+            R.id.action_loginFragment_to_registrationFragment, null,
+            NavOptions.Builder()
+                .setPopUpTo(
+                    registrationFragment,
+                    true
+                ).build()
+        )
+    }
+
+    fun navigateFromLoginToMenu() {
+        navController.navigate(R.id.action_loginFragment_to_menuFragment)
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
@@ -72,9 +106,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
                 removeView()
             }
         }
-
     }
-
 
     private fun showWindow() {
         val params = WindowManager.LayoutParams(
@@ -84,15 +116,12 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE and WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         )
-
         params.gravity = Gravity.TOP
-
         wManager.addView(viewL, params)
     }
 
     private fun removeView() {
         wManager.removeView(viewL)
-
     }
 
     override fun onResume() {

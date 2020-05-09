@@ -2,7 +2,7 @@
 
     <!-- Base application theme. -->
     <style
-        name="AppTheme" parent="Theme.MaterialComponents.DayNight.Bridge" >
+        name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge" >
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
         <item name="colorPrimary">@color/darkGreen</item>-->
 <!--      <item name="colorPrimaryDark">@color/darkGreen</item>&ndash;&gt;-->

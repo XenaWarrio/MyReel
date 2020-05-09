@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import dx.queen.myreel.appInstance.AppInstance
 import dx.queen.myreel.models.FullUserInformationForDB
 
-@Database(entities = [FullUserInformationForDB::class], version = 1)
+@Database(entities = [FullUserInformationForDB::class], version = 1, exportSchema = false)
 
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

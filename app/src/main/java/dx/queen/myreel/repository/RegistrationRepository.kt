@@ -59,7 +59,6 @@ class RegistrationRepository(
 
     private fun saveUserToFireBaseDatabase(imageUrl: String, userId: String) {
         val refDataBase = FirebaseDatabase.getInstance().getReference("/users/$userId")
-
         val user = FullUserInformationForFireBase(
             userId,
             email,

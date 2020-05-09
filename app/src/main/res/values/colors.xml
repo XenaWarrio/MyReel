@@ -5,4 +5,11 @@
     <color name="darkDarkGreen">#76a33f</color>
     <color name="lightGreen">#f2f8de</color>
     <color name="grey">#808080</color>
+    <color name="white">#ffffff</color>
+    <color name="companion">#d2deaa</color>
+    <color name="user">#eaffaa</color>
+    <color name="lightYellow">#feffcb</color>
+    <color name="yellow">#fbfd8c</color>
+    <color name="darkYellow">#c7c862</color>
+    <color name="darkDarkYellow">#b8ba1b</color>
 </resources>

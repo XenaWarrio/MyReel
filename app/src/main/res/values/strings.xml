@@ -16,12 +16,15 @@
     <string name="done"> готово </string>
     <string name="back"> назад </string>
 
-
     <string name="cant_be_empty"> не может быть пустым! </string>
     <string name="ok">ok</string>
     <string name="should_contains_more_symbols"> в поле должно быть больше символов! </string>
     <string name="should_contains_dog">пропущен символ @  </string>
     <string name="password_should_contains">пароль должен содержать буквы и цифры </string>
+
+    <string name="chats"> chats </string>
+    <string name="send_message"> отправить </string>
+    <string name="hint_message"> введите сообщение </string>
 
 
 </resources>

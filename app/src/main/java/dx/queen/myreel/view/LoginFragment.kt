@@ -30,26 +30,20 @@ class LoginFragment : Fragment() {
 
         val view = loginBinding.root
         loginBinding.lifecycleOwner = this
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val ac = activity as MainActivity
-
         val viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-
         loginBinding.loginViewModel = viewModel
 
-
-
         val emailError = Observer<Int> {
-            loginBinding.emailSignIn.error = context!!.resources.getText(it)
+            loginBinding.emailSignIn.error = requireContext().resources.getText(it)
         }
         val passwordError = Observer<Int> {
-            loginBinding.passwordSignIn.error = context!!.resources.getText(it)
+            loginBinding.passwordSignIn.error = requireContext().resources.getText(it)
         }
         val fireBaseError = Observer<String> {
             makeText(context, it, Toast.LENGTH_LONG).show()
@@ -59,12 +53,11 @@ class LoginFragment : Fragment() {
         }
 
         val signInSuccess = Observer<String> {
-            makeText(context, "SUCCESS", Toast.LENGTH_LONG).show()
-            // turn main fragment
+            ac.navigateFromLoginToMenu()
         }
 
         val toRegistration = Observer<String>{
-            ac.navigateToRegistration()
+            ac.navigateFromLoginToRegistration()
         }
 
         viewModel.emailError.observe(viewLifecycleOwner, emailError)
