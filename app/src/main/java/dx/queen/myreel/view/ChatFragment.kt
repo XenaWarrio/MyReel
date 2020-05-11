@@ -37,7 +37,6 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val currentUserId = FirebaseAuth.getInstance().uid
         val chatsItem = requireArguments().getParcelable<ChatsItem>("chatsItem")
         binding.username.text = chatsItem!!.name
         Picasso.get().load(chatsItem.imageUrl).into(binding.companionImage)
@@ -59,7 +58,7 @@ class ChatFragment : Fragment() {
             }
         })
 
-        val adapter = ChatAdapter(currentUserId!!)
+        val adapter = ChatAdapter()
         binding.rvChat.layoutManager = LinearLayoutManager(context)
         binding.rvChat.adapter = adapter
 

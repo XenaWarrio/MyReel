@@ -6,11 +6,16 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import dx.queen.myreel.appInstance.AppInstance
 import dx.queen.myreel.models.FullUserInformationForFireBase
+import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister
+import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister.writeUserId
 
 class Repository {
 
     private val auth = FirebaseAuth.getInstance()
+
+    private val context = AppInstance.instance.applicationContext
 
     var authFailedForRegistration = MutableLiveData<String>()
     var authHaveToConfirmEmailForRegistration = MutableLiveData<String>()
@@ -57,6 +62,9 @@ class Repository {
                 if (!it.user!!.isEmailVerified) {
                     emailNotConfirmedForLogin.value = ""
                 } else {
+                    SharedPreferencesIsUserRegister.init(context).apply {
+                        writeUserId(it.user!!.uid)
+                    }
                     authSucceedForLogin.value = ""
                 }
             }
@@ -68,7 +76,7 @@ class Repository {
 
     fun getUserInformationFromFireBase(): FullUserInformationForFireBase? {
         auth.currentUser!!.reload()
-        var user : FullUserInformationForFireBase? = null
+        var user: FullUserInformationForFireBase? = null
         val userId = auth.currentUser!!.uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$userId")
 

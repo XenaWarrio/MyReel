@@ -28,9 +28,9 @@ class ChatRepository(private val companionId: String) {
         val message = Message(ref.key!!, text, currentUserId!!, companionId)
         Log.d("BUTTON_DOESNT_WORK", "  adapter userId = $currentUserId")
 
-        adapter.listOfMessages.add(message)
+        adapter.addMessage(message)
 
-        Log.d("BUTTON_DOESNT_WORK", "repository adapter list size = = ${adapter.listOfMessages.size}")
+        Log.d("BUTTON_DOESNT_WORK", "repository adapter list size = = ")
 
         ref.setValue(message)
         toRef.setValue(message)
@@ -48,7 +48,7 @@ class ChatRepository(private val companionId: String) {
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val message = p0.getValue(Message::class.java)
                 if (message != null) {
-                        adapter.listOfMessages.add(message)
+                        adapter.addMessage(message)
                 }
             }
 

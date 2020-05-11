@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dx.queen.myreel.databinding.MessageInChatBinding
 import dx.queen.myreel.models.Message
+import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister
 import kotlinx.android.synthetic.main.message_user.view.*
 
 
-class ChatAdapter() : RecyclerView.Adapter<MessageViewHolder>() {
+class ChatAdapter : RecyclerView.Adapter<MessageViewHolder>() {
 
-     var currentUserId = " "
+     var currentUserId = SharedPreferencesIsUserRegister.getUserId()
 
-    constructor(currentUserId:String) : this() {
-        this.currentUserId = currentUserId
+
+   private var listOfMessages = arrayListOf<Message>()
+
+    fun addMessage(message:Message){
+        listOfMessages.add(message)
+        notifyDataSetChanged()
     }
-    var listOfMessages = arrayListOf<Message>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         Log.d("BUTTON_DOESNT_WORK", "on create view holder +  adapter userId = $currentUserId")
