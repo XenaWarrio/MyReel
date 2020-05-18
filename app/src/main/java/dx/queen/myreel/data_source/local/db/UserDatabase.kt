@@ -1,4 +1,4 @@
-package dx.queen.myreel.repository.db
+package dx.queen.myreel.data_source.local.db
 
 import androidx.room.Database
 import androidx.room.Room

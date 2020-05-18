@@ -1,18 +1,14 @@
 package dx.queen.myreel.viewModel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import dx.queen.myreel.R
 import dx.queen.myreel.repository.Repository
-import dx.queen.myreel.repository.WorkWithDatabase
-import kotlinx.coroutines.GlobalScope
+import dx.queen.myreel.data_source.local.WorkWithDatabase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
     private val repository = Repository()
-    private val workWithDatabase = WorkWithDatabase()
 
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
@@ -20,28 +16,28 @@ class LoginViewModel : ViewModel() {
     var emailError = MutableLiveData<Int>()
     var passwordError = MutableLiveData<Int>()
 
-    var emailNotConfirmed = MutableLiveData<String>()
+    var emailNotConfirmed = MutableLiveData<Unit>()
     var fireBaseError = MutableLiveData<String>()
-    var authSuccess = MutableLiveData<String>()
+    val authSuccess = MutableLiveData<Unit>()
 
     var haveNoAccount = MutableLiveData<String>()
 
-    private val emailNotConfirmedObserver = Observer<String> {
-        emailNotConfirmed.value = it
+    private val emailNotConfirmedObserver = Observer<Unit> {
+        emailNotConfirmed.value = Unit
     }
     private val fireBaseErrorObserver = Observer<String> {
         fireBaseError.value = it
     }
 
-    private val authSucceedObserver = Observer<String> {
-        authSuccess.value = ""
-        GlobalScope.launch {
+    private val authSucceedObserver = Observer<Unit> {
+        authSuccess.value = Unit
+       viewModelScope.launch {
             val job = async {
                 repository.getUserInformationFromFireBase()
             }
             job.await()?.let{user->
                 launch {
-                    workWithDatabase.saveUserToDB(user)
+                    repository.saveUserToDB(user)
                 }
             }
         }

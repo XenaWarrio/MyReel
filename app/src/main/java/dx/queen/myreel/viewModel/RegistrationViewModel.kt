@@ -17,23 +17,23 @@ class RegistrationViewModel : ViewModel() {
     var username = MutableLiveData<String>()
     var dateOfBirth = MutableLiveData<String>()
     var imageUrl = MutableLiveData<String>()
-    var haveAnAccount = MutableLiveData<String>()
-    var haveToConfirmEmail = MutableLiveData<String>()
+    var haveAnAccount = MutableLiveData<Unit>()
+    var haveToConfirmEmail = MutableLiveData<Unit>()
 
     var emailError = MutableLiveData<Int>()
     var passwordError = MutableLiveData<Int>()
     var usernameError = MutableLiveData<Int>()
     var authError = MutableLiveData<String>()
 
-    var dateFragment = MutableLiveData<String>()
-    var clearAllFields = MutableLiveData<String>()
+    var dateFragment = MutableLiveData<Unit>()
+    var clearAllFields = MutableLiveData<Unit>()
 
     fun onClick() {
         if (!checkIsCorrect()) {
             return
         }
         GlobalScope.launch {
-            repository.createNewUser(
+            repository.createNewUserRepository(
                 email.value!!,
                 password.value!!,
                 username.value!!,
@@ -45,18 +45,18 @@ class RegistrationViewModel : ViewModel() {
             authError.value = it
         }
         repository.authHaveToConfirmEmailForRegistration.observeForever {
-            haveToConfirmEmail.value = it
+            haveToConfirmEmail.value = Unit
         }
-        clearAllFields.value = "clear"
+        clearAllFields.value = Unit
 
     }
 
     fun pickADate() {
-        dateFragment.value = "open"
+        dateFragment.value = Unit
     }
 
     fun haveAnAccount() {
-        haveAnAccount.value = "yes"
+        haveAnAccount.value =Unit
     }
 
 

@@ -52,11 +52,11 @@ class RegistrationFragment : Fragment() {
         registrationBinding.viewModel = viewModel
 
 
-        val haveAnAccount = Observer<String> {
+        val haveAnAccount = Observer<Unit> {
             ac.navigateFromRegistrationToLogin()
         }
 
-        val confirmEmail = Observer<String> {
+        val confirmEmail = Observer<Unit> {
             makeText(context, R.string.verifyEmail, Toast.LENGTH_LONG).show()
             ac.navigateFromRegistrationToLogin()
         }
@@ -65,11 +65,11 @@ class RegistrationFragment : Fragment() {
             registrationBinding.dateOfBirth.text = date
         }
 
-        val fragmentDatePicker = Observer<String> {
+        val fragmentDatePicker = Observer<Unit> {
             openDatePicker(viewModel)
         }
 
-        val clearAllFields = Observer<String> {
+        val clearAllFields = Observer<Unit> {
             registrationBinding.userEmail.text.clear()
             registrationBinding.userPassword.text.clear()
             registrationBinding.userName.text.clear()

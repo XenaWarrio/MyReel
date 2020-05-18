@@ -1,95 +1,72 @@
 package dx.queen.myreel.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import dx.queen.myreel.appInstance.AppInstance
+import androidx.lifecycle.Observer
+import dx.queen.myreel.data_source.local.WorkWithDatabase
+import dx.queen.myreel.data_source.network.FireBase
 import dx.queen.myreel.models.FullUserInformationForFireBase
-import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister
-import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister.writeUserId
+import dx.queen.myreel.models.Message
 
 class Repository {
-
-    private val auth = FirebaseAuth.getInstance()
-
-    private val context = AppInstance.instance.applicationContext
+    private val fireBase = FireBase()
+    private val workWithDatabase = WorkWithDatabase()
 
     var authFailedForRegistration = MutableLiveData<String>()
-    var authHaveToConfirmEmailForRegistration = MutableLiveData<String>()
+    var authHaveToConfirmEmailForRegistration = MutableLiveData<Unit>()
 
-    var emailNotConfirmedForLogin = MutableLiveData<String>()
+    var emailNotConfirmedForLogin = MutableLiveData<Unit>()
     var authFireBaseFailedForLogin = MutableLiveData<String>()
-    var authSucceedForLogin = MutableLiveData<String>()
+    var authSucceedForLogin = MutableLiveData<Unit>()
 
-    fun createNewUser(
+    private val messageObserver = Observer<Message> {
+        message.value = it
+    }
+
+    var message = MutableLiveData<Message>()
+
+    fun createNewUserRepository(
         emailForSaving: String,
         passwordForSaving: String,
         username: String,
         uri: String?,
         date: String
     ) {
-        sendEmailVerification(emailForSaving, passwordForSaving)
+        val firebaseSourceData = FireBase(emailForSaving, passwordForSaving, username, uri, date)
+        firebaseSourceData.createNewUser()
+        fireBase.authHaveToConfirmEmailForRegistration.observeForever {
+            authHaveToConfirmEmailForRegistration.value = Unit
+        }
 
-        val registration =
-            RegistrationRepository(
-                emailForSaving,
-                passwordForSaving,
-                username,
-                uri,
-                date
-            )
-        registration.register()
+        fireBase.authFailedForRegistration.observeForever {
+            authFailedForRegistration.value = it
+        }
     }
-
-    private fun sendEmailVerification(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                authHaveToConfirmEmailForRegistration.value = ""
-                auth.currentUser!!.sendEmailVerification()
-            }
-            .addOnFailureListener {
-                authFailedForRegistration.value = it.message
-            }
-    }
-
 
     fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                if (!it.user!!.isEmailVerified) {
-                    emailNotConfirmedForLogin.value = ""
-                } else {
-                    SharedPreferencesIsUserRegister.init(context).apply {
-                        writeUserId(it.user!!.uid)
-                    }
-                    authSucceedForLogin.value = ""
-                }
-            }
-            .addOnFailureListener {
-                authFireBaseFailedForLogin.value = it.message
-            }
+        fireBase.signIn(email, password)
 
+        fireBase.emailNotConfirmedForLogin.observeForever {
+            emailNotConfirmedForLogin.value = Unit
+        }
+        fireBase.authSucceedForLogin.observeForever {
+            authSucceedForLogin.value = Unit
+        }
+
+        fireBase.authFireBaseFailedForLogin.observeForever {
+            authFireBaseFailedForLogin.value = it
+        }
     }
 
-    fun getUserInformationFromFireBase(): FullUserInformationForFireBase? {
-        auth.currentUser!!.reload()
-        var user: FullUserInformationForFireBase? = null
-        val userId = auth.currentUser!!.uid
-        val ref = FirebaseDatabase.getInstance().getReference("/users/$userId")
+    fun getUserInformationFromFireBase() = fireBase.getUserInformationFromFireBase()
 
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
+    suspend fun saveUserToDB(user: FullUserInformationForFireBase) {
+        workWithDatabase.saveUserToDB(user)
+    }
 
-            }
+    fun sendMessage(message: String, companionId: String) {
+        val fireBaseCompanionId = FireBase(companionId)
+        fireBaseCompanionId.sendMessage(message)
 
-            override fun onDataChange(p0: DataSnapshot) {
-                user = p0.getValue(FullUserInformationForFireBase::class.java)
-            }
-
-        })
-        return user
+        fireBase.messageLivaData.observeForever(messageObserver)
     }
 }

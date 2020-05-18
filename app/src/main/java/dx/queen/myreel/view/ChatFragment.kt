@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import dx.queen.myreel.R
 import dx.queen.myreel.databinding.FragmentChatBinding
@@ -19,6 +18,7 @@ import dx.queen.myreel.viewModel.ChatViewModel
 import dx.queen.myreel.viewModel.ViewModelFactory
 import dx.queen.myreel.viewModel.rvChat.ChatAdapter
 import dx.queen.myreel.viewModel.rvChats.ChatsItem
+import dx.queen.myreel.models.Message
 
 class ChatFragment : Fragment() {
     lateinit var binding: FragmentChatBinding
@@ -63,10 +63,15 @@ class ChatFragment : Fragment() {
         binding.rvChat.adapter = adapter
 
         val clearFieldObserver = Observer<String> {
-
             binding.etMessage.text.clear()
             binding.rvChat.scrollToPosition(adapter.itemCount - 1)
         }
+
+        val messageBetweenUsers = Observer<Message>{
+            adapter.addMessage(it)
+        }
+
         viewModel.clearTextField.observe(viewLifecycleOwner, clearFieldObserver)
+        viewModel.messageBetweenUsers.observe(viewLifecycleOwner, messageBetweenUsers)
     }
 }

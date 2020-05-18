@@ -1,21 +1,26 @@
 package dx.queen.myreel.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import dx.queen.myreel.models.Message
-import dx.queen.myreel.repository.chats.ChatRepository
-import dx.queen.myreel.viewModel.rvChat.ChatAdapter
+import dx.queen.myreel.repository.Repository
 
-class ChatViewModel (companionId: String): ViewModel() {
-    private val repository = ChatRepository(companionId)
+class ChatViewModel (private val companionId: String): ViewModel() {
+    private val repository = Repository()
 
     var message = MutableLiveData<String>()
     var clearTextField = MutableLiveData<String>()
 
+    private val messageBetweenUsersObserver = Observer<Message> {
+        messageBetweenUsers.value = it
+    }
+
+    var messageBetweenUsers = MutableLiveData<Message>()
+
     fun sendMessage() {
-        Log.d("BUTTON_DOESNT_WORK", "method")
         clearTextField.value = " "
-        repository.sendMessage(message.value!!)
+        repository.sendMessage(message.value!!, companionId)
+        repository.message.observeForever(messageBetweenUsersObserver)
     }
 }

@@ -1,8 +1,8 @@
-package dx.queen.myreel.repository
+package dx.queen.myreel.data_source.local
 
 import dx.queen.myreel.models.FullUserInformationForDB
 import dx.queen.myreel.models.FullUserInformationForFireBase
-import dx.queen.myreel.repository.db.UserDatabase
+import dx.queen.myreel.data_source.local.db.UserDatabase
 
 class WorkWithDatabase {
 

@@ -48,11 +48,11 @@ class LoginFragment : Fragment() {
         val fireBaseError = Observer<String> {
             makeText(context, it, Toast.LENGTH_LONG).show()
         }
-        val emailNotConfirmed = Observer<String> {
+        val emailNotConfirmed = Observer<Unit> {
             makeText(context, R.string.verifyEmailError, Toast.LENGTH_LONG).show()
         }
 
-        val signInSuccess = Observer<String> {
+        val signInSuccess = Observer<Unit> {
             ac.navigateFromLoginToMenu()
         }
 
