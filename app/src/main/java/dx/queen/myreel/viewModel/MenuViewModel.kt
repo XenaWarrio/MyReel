@@ -4,25 +4,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class MenuViewModel : ViewModel() {
-    val chat = MutableLiveData<String>()
-    val search = MutableLiveData<String>()
-    val personalInformation =  MutableLiveData<String>()
-    val exit = MutableLiveData<String>()
-
+    val chat = MutableLiveData<Unit>()
+    val search = MutableLiveData<Unit>()
+    val personalInformation =  MutableLiveData<Unit>()
+    val exit = MutableLiveData<Unit>()
 
     fun openChat(){
-        chat.value = ""
+        chat.value = Unit
     }
 
     fun openSearch(){
-        search.value = ""
+        search.value = Unit
     }
 
     fun openPersonalInformation(){
-        personalInformation.value = ""
+        personalInformation.value = Unit
     }
 
     fun exit(){
-        exit.value = ""
+        exit.value = Unit
     }
 }
