@@ -3,6 +3,7 @@ package dx.queen.myreel.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dx.queen.myreel.R
 import dx.queen.myreel.repository.Repository
 import kotlinx.coroutines.GlobalScope
@@ -32,7 +33,7 @@ class RegistrationViewModel : ViewModel() {
         if (!checkIsCorrect()) {
             return
         }
-        GlobalScope.launch {
+        viewModelScope.launch {
             repository.createNewUserRepository(
                 email.value!!,
                 password.value!!,

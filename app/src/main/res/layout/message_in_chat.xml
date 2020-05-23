@@ -16,13 +16,14 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:layout_margin="16dp"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/message_from_companion"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="@{adapter.currentUserId.equals(message.fromUserId) ? Gravity.END : Gravity.START}"
+            android:layout_width="wrap_content"
+            android:gravity="@{adapter.currentUserId.equals(message.fromUserId) ? Gravity.START : Gravity.END}"
             android:maxWidth="240dp"
             android:background="@drawable/message_companion"
             app:layout_constraintStart_toStartOf="parent"

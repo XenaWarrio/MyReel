@@ -27,8 +27,8 @@ class ChatAdapter : RecyclerView.Adapter<MessageViewHolder>() {
         Log.d("BUTTON_DOESNT_WORK", "on create view holder +  adapter userId = $currentUserId")
 
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view: MessageInChatBinding = MessageInChatBinding.inflate(layoutInflater, parent, false)
-        return MessageViewHolder(view.root)
+        val binding: MessageInChatBinding = MessageInChatBinding.inflate(layoutInflater, parent, false)
+        return MessageViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
@@ -42,13 +42,11 @@ class ChatAdapter : RecyclerView.Adapter<MessageViewHolder>() {
     }
 }
 
-class MessageViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+class MessageViewHolder(private val binding: MessageInChatBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(text: String) {
-        Log.d("BUTTON_DOESNT_WORK", "ON BIND viewHolderUserMessages")
-
-        itemView.message_from_user.text = text
+        binding.messageFromCompanion.text = text // TODO remove the bang operator
+//        itemView.message_from_user.text = text
     }
-
 }
 
 

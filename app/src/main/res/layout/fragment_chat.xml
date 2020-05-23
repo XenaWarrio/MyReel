@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="dx.queen.myreel.viewModel.ChatViewModel" />
@@ -17,25 +17,25 @@
             android:id="@+id/top_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/lightYellow">
+            android:background="@color/lightYellow"
+            app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/companion_image"
-                app:civ_border_color="@color/darkDarkGreen"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                app:civ_border_color="@color/darkDarkGreen"
                 app:civ_border_width="2dp" />
 
             <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="Username"
                 android:textColor="@color/darkDarkGreen"
                 android:textSize="16sp"
@@ -62,11 +62,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@={viewModel.message}"
             android:hint="@string/hint_message"
+            android:text="@={viewModel.message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bt_send_message"
             app:layout_constraintStart_toStartOf="parent" />
+
 
         <Button
             android:id="@+id/bt_send_message"

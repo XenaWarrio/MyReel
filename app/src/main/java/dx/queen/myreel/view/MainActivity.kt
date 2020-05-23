@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import com.google.firebase.auth.FirebaseAuth
 import dx.queen.myreel.R
 import dx.queen.myreel.broadcast.ConnectivityReceiver
 import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister
@@ -44,10 +45,14 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             this,
             R.id.nav_host_fragment
         )
-        if (SharedPreferencesIsUserRegister.read(true)) {
+
+        // We're getting the current user from Firebase
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        // Check if the current user is not null (if it is then send the current user into the RegistrationFragment)
+        if (currentUser != null) {
             navController.navigate(R.id.menuFragment)
         } else {
-            SharedPreferencesIsUserRegister.write(true)
             navController.navigate(registrationFragment)
         }
     }
@@ -56,8 +61,10 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         Log.d("VIEW_ERROR", " main activity === chatItem = $chatItems")
 
         val bundle = bundleOf("chatsItem" to chatItems)
-        Log.d("VIEW_ERROR", "" +
-                "$bundle")
+        Log.d(
+            "VIEW_ERROR", "" +
+                    "$bundle"
+        )
 
         navController.navigate(R.id.action_chatsFragment_to_chatFragment, bundle)
     }
