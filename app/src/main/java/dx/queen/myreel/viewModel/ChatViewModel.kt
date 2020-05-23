@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import dx.queen.myreel.models.Message
 import dx.queen.myreel.repository.Repository
 
-class ChatViewModel (private val companionId: String): ViewModel() {
+class ChatViewModel(private val companionId: String) : ViewModel() {
     private val repository = Repository()
 
     var message = MutableLiveData<String>()
@@ -17,6 +17,16 @@ class ChatViewModel (private val companionId: String): ViewModel() {
     }
 
     var messageBetweenUsers = MutableLiveData<Message>()
+
+//    fun sendMessage2(messageString: String) {
+//        messageBetweenUsers.value =
+//            Message(
+//                id = "messageID",
+//                fromUserId = "andreyID",
+//                toCompanionId = "kseniaID",
+//                text = messageString
+//            )
+//    }
 
     fun sendMessage() {
         clearTextField.value = " "

@@ -35,16 +35,16 @@ class MenuFragment : Fragment() {
         val menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
         menuBinder.menu = menuViewModel
 
-        val  observerChat = Observer<Unit>{
+        val  observerChat = Observer<String>{
             ac.navigateFromMenuToChats()
         }
-        val observerSearch = Observer<Unit>{
+        val observerSearch = Observer<String>{
             ac.navigateFromMenuToSearch()
         }
-        val observerPersonalInformation = Observer<Unit>{
+        val observerPersonalInformation = Observer<String>{
             ac.navigateFromMenuToPersonalInformation()
         }
-        val observerExit = Observer<Unit>{
+        val observerExit = Observer<String>{
             ac.navigateFromMenuToRegistration()
         }
 

@@ -13,7 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.datepicker.*
+import com.google.android.material.datepicker.MaterialDatePicker
 import dx.queen.myreel.R
 import dx.queen.myreel.databinding.FragmentRegistrationBinding
 import dx.queen.myreel.viewModel.RegistrationViewModel
@@ -134,17 +134,11 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun openDatePicker(viewModel: RegistrationViewModel) {
-        val calendarMin = Calendar.getInstance()
-        val calendarMax = Calendar.getInstance()
-        calendarMin.set(1920, 1 ,1)
-        calendarMax.set(2012, 1, 1)
-
-
+        val calendar = Calendar.getInstance()
         val builder: MaterialDatePicker.Builder<Long> =
-            MaterialDatePicker.Builder
-                .datePicker()
-                .setCalendarConstraints(CalendarConstraints.Builder().setStart(calendarMin.timeInMillis).setEnd(calendarMax.timeInMillis).build())
-                .setTitleText(R.string.dateOfBirth)
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText(dx.queen.myreel.R.string.dateOfBirth)
+                .setSelection(calendar.timeInMillis)
 
         builder.setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
         val picker: MaterialDatePicker<Long> = builder.build()

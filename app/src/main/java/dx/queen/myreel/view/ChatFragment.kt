@@ -19,6 +19,7 @@ import dx.queen.myreel.viewModel.ViewModelFactory
 import dx.queen.myreel.viewModel.rvChat.ChatAdapter
 import dx.queen.myreel.viewModel.rvChats.ChatsItem
 import dx.queen.myreel.models.Message
+import kotlinx.android.synthetic.main.fragment_chat.*
 
 class ChatFragment : Fragment() {
     lateinit var binding: FragmentChatBinding
@@ -58,6 +59,11 @@ class ChatFragment : Fragment() {
             }
         })
 
+        // TODO remove this implementation since is just the dummy implementation
+//        binding.btSendMessage.setOnClickListener {
+//            viewModel.sendMessage2(binding.etMessage.text.toString())
+//        }
+
         val adapter = ChatAdapter()
         binding.rvChat.layoutManager = LinearLayoutManager(context)
         binding.rvChat.adapter = adapter
@@ -67,7 +73,7 @@ class ChatFragment : Fragment() {
             binding.rvChat.scrollToPosition(adapter.itemCount - 1)
         }
 
-        val messageBetweenUsers = Observer<Message>{
+        val messageBetweenUsers = Observer<Message> {
             adapter.addMessage(it)
         }
 

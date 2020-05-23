@@ -9,8 +9,6 @@ import android.os.Build
 
 
 class ConnectivityReceiver : BroadcastReceiver() {
-    private var isInternetOn = false
-
     companion object {
         var connectivityReceiverListener: ConnectivityReceiverListener? = null
     }
@@ -23,7 +21,7 @@ class ConnectivityReceiver : BroadcastReceiver() {
     }
 
 
-     fun isConnectedOrConnecting(context: Context): Boolean {
+    private fun isConnectedOrConnecting(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -45,14 +43,13 @@ class ConnectivityReceiver : BroadcastReceiver() {
                 ))
             }
         }
+
         return false
     }
 
     interface ConnectivityReceiverListener {
         fun onNetworkConnectionChanged(isConnected: Boolean)
     }
-
-    fun IsInternetOn()= isInternetOn
 
 
 }

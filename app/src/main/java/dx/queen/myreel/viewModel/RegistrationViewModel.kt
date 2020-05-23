@@ -33,7 +33,7 @@ class RegistrationViewModel : ViewModel() {
         if (!checkIsCorrect()) {
             return
         }
-       viewModelScope.launch {
+        viewModelScope.launch {
             repository.createNewUserRepository(
                 email.value!!,
                 password.value!!,
