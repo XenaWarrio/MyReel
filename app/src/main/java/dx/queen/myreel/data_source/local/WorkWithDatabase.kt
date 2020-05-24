@@ -6,8 +6,6 @@ import dx.queen.myreel.data_source.local.db.UserDatabase
 
 class WorkWithDatabase {
 
-   // lateinit var user: FullUserInformationForDB
-
     private val userDatabase = UserDatabase.getDatabase()!!.userDao()
 
     suspend fun saveUserToDB(user: FullUserInformationForFireBase) {

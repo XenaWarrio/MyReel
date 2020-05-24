@@ -44,8 +44,6 @@ class ChatsFragment : Fragment() {
         binding.rvChatsRow.adapter = adapter
 
         val chatOnclick = Observer<ChatsItem> {
-            Log.d("VIEW_ERROR", "chat onclick")
-
             ac.openCertainChat(it)
         }
 

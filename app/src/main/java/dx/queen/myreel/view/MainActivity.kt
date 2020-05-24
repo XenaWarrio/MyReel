@@ -50,21 +50,15 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         // Check if the current user is not null (if it is then send the current user into the RegistrationFragment)
-        if (currentUser != null) {
-            navController.navigate(R.id.menuFragment)
-        } else {
+//        if (currentUser != null) {
+//            navController.navigate(R.id.menuFragment)
+//        } else {
             navController.navigate(registrationFragment)
-        }
+        //}
     }
 
     fun openCertainChat(chatItems: ChatsItem) {
-        Log.d("VIEW_ERROR", " main activity === chatItem = $chatItems")
-
         val bundle = bundleOf("chatsItem" to chatItems)
-        Log.d(
-            "VIEW_ERROR", "" +
-                    "$bundle"
-        )
 
         navController.navigate(R.id.action_chatsFragment_to_chatFragment, bundle)
     }

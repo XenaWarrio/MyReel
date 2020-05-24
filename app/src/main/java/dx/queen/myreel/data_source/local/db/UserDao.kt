@@ -15,6 +15,6 @@ interface UserDao {
     @Delete
     fun delete(user: FullUserInformationForDB)
 
-    @Query("SELECT * FROM full_user_information WHERE uid = :uid")
-    fun getUser(uid: String): FullUserInformationForDB
+    @Query("SELECT * FROM full_user_information WHERE email = :email")
+    fun getUser(email: String): FullUserInformationForDB
 }

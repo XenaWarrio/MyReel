@@ -74,7 +74,6 @@ class RegistrationFragment : Fragment() {
             registrationBinding.userPassword.text.clear()
             registrationBinding.userName.text.clear()
             registrationBinding.dateOfBirth.text = ""
-            //registrationBinding.selectedImageView.
 
         }
 

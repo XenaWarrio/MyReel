@@ -56,7 +56,7 @@ class LoginFragment : Fragment() {
             ac.navigateFromLoginToMenu()
         }
 
-        val toRegistration = Observer<String>{
+        val toRegistration = Observer<Unit>{
             ac.navigateFromLoginToRegistration()
         }
 

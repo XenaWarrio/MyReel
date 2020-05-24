@@ -57,7 +57,7 @@ class RegistrationViewModel : ViewModel() {
     }
 
     fun haveAnAccount() {
-        haveAnAccount.value =Unit
+        haveAnAccount.value = Unit
     }
 
 

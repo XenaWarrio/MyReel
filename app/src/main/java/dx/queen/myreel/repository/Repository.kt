@@ -1,14 +1,21 @@
 package dx.queen.myreel.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.google.firebase.auth.FirebaseAuth
 import dx.queen.myreel.data_source.local.WorkWithDatabase
 import dx.queen.myreel.data_source.network.FireBase
 import dx.queen.myreel.models.FullUserInformationForFireBase
 import dx.queen.myreel.models.Message
 
 class Repository {
-    private val fireBase = FireBase()
+
+    private val fireBase = FireBase().apply {
+        messageLivaData.observeForever(messageObserver)
+    }
+
+
     private val workWithDatabase = WorkWithDatabase()
 
     var authFailedForRegistration = MutableLiveData<String>()
@@ -19,10 +26,10 @@ class Repository {
     var authSucceedForLogin = MutableLiveData<Unit>()
 
     private val messageObserver = Observer<Message> {
-        message.value = it
+        messageLiveData.value = it
     }
 
-    var message = MutableLiveData<Message>()
+    var messageLiveData = MutableLiveData<Message>()
 
     fun createNewUserRepository(
         emailForSaving: String,
@@ -63,10 +70,9 @@ class Repository {
         workWithDatabase.saveUserToDB(user)
     }
 
-    fun sendMessage(message: String, companionId: String) {
-        val fireBaseCompanionId = FireBase(companionId)
-        fireBaseCompanionId.sendMessage(message)
+    fun sendMessage(message: String, companionEmail: String) {
+        val fireBaseCompanion = FireBase(companionEmail)
+        fireBaseCompanion.sendMessage(message)
 
-        fireBase.messageLivaData.observeForever(messageObserver)
     }
 }

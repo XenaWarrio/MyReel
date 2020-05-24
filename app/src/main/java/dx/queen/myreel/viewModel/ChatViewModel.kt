@@ -5,32 +5,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import dx.queen.myreel.models.Message
 import dx.queen.myreel.repository.Repository
+import dx.queen.myreel.utils.clearPoints
 
-class ChatViewModel(private val companionId: String) : ViewModel() {
+class ChatViewModel(private val companionEmail: String) : ViewModel() {
     private val repository = Repository()
 
     var message = MutableLiveData<String>()
     var clearTextField = MutableLiveData<String>()
 
     private val messageBetweenUsersObserver = Observer<Message> {
+
         messageBetweenUsers.value = it
     }
 
     var messageBetweenUsers = MutableLiveData<Message>()
 
-//    fun sendMessage2(messageString: String) {
-//        messageBetweenUsers.value =
-//            Message(
-//                id = "messageID",
-//                fromUserId = "andreyID",
-//                toCompanionId = "kseniaID",
-//                text = messageString
-//            )
-//    }
 
     fun sendMessage() {
+        repository.sendMessage(message.value!!, companionEmail.clearPoints())
+        repository.messageLiveData.observeForever(messageBetweenUsersObserver)
         clearTextField.value = " "
-        repository.sendMessage(message.value!!, companionId)
-        repository.message.observeForever(messageBetweenUsersObserver)
+
     }
 }

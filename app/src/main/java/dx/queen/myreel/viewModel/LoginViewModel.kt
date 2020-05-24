@@ -20,7 +20,7 @@ class LoginViewModel : ViewModel() {
     var fireBaseError = MutableLiveData<String>()
     val authSuccess = MutableLiveData<Unit>()
 
-    var haveNoAccount = MutableLiveData<String>()
+    var haveNoAccount = MutableLiveData<Unit>()
 
     private val emailNotConfirmedObserver = Observer<Unit> {
         emailNotConfirmed.value = Unit
@@ -54,7 +54,7 @@ class LoginViewModel : ViewModel() {
     }
 
     fun haveNoAccount(){
-        haveNoAccount.value = "yes"
+        haveNoAccount.value = Unit
     }
 
     private fun checkIsCorrect(): Boolean {

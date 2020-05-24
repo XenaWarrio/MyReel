@@ -18,7 +18,7 @@ data class FullUserInformationForFireBase(
 @Entity(tableName = "full_user_information")
 data class FullUserInformationForDB(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
-    var uid: String,
+    var firebaseUid: String,
     var email: String,
     var password: String,
     var userName: String,

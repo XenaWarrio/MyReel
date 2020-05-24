@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.FirebaseDatabase
 import dx.queen.myreel.models.FullUserInformationForFireBase
+import dx.queen.myreel.utils.clearPoints
 import dx.queen.myreel.viewModel.rvChats.ChatsItem
 
 fun <T> MutableLiveData<ArrayList<T>>.addArrayList(values: List<T>) {
@@ -33,8 +34,9 @@ class ChatsViewModel : ViewModel() {
 
 
      fun fetchCurrentUser() {
+         val email = "queen.de.xena@gmail.com".clearPoints()
         val refDataBase =
-            FirebaseDatabase.getInstance().getReference("/users/rE97mBGHV4YuAuPrFJsLlvcEOqL2")
+            FirebaseDatabase.getInstance().getReference("/users/$email")
         val user = FullUserInformationForFireBase(
             "rE97mBGHV4YuAuPrFJsLlvcEOqL2",
             "queen.de.xena@gmail.com",
@@ -49,24 +51,10 @@ class ChatsViewModel : ViewModel() {
         val chatItem = ChatsItem(
             "Xena",
             "android.resource://dx.queen.myreel/drawable/voldemort",
-            "rE97mBGHV4YuAuPrFJsLlvcEOqL2"
+            "queen.de.xena@gmail.com"
         )
         addNewChat(chatItem)
 
-  //      val ref = FirebaseDatabase.getInstance().getReference("/users/rE97mBGHV4YuAuPrFJsLlvcEOqL2")
-
-//        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-//
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                val exampleUser = p0.getValue(User::class.java)
-//                val chatsItem
-//            }
-//
-//        })
-//
    }
 
 }
