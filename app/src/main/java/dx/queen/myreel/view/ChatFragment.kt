@@ -38,17 +38,21 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val chatsItem = requireArguments().getParcelable<ChatsItem>("chatsItem")
-        binding.username.text = chatsItem!!.name
-        Picasso.get().load(chatsItem.imageUrl).into(binding.companionImage)
 
+        //getting specific chat by bundle
+        val chatsItem = requireArguments().getParcelable<ChatsItem>("chatsItem")
+
+        binding.username.text = chatsItem!!.name // set companion name
+        Picasso.get().load(chatsItem.imageUrl).into(binding.companionImage)// set companion image
+
+        //configure viewModel
         val viewModel = ViewModelProvider(
             this,
             ViewModelFactory(chatsItem.companionId)
         ).get(ChatViewModel::class.java)
         binding.viewModel = viewModel
 
-        binding.btSendMessage.isEnabled = false
+        binding.btSendMessage.isEnabled = false // until edit text is empty
         binding.etMessage.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -59,7 +63,7 @@ class ChatFragment : Fragment() {
             }
         })
 
-
+        //configure adapter
         val adapter = ChatAdapter()
         binding.rvChat.layoutManager = LinearLayoutManager(context)
         binding.rvChat.adapter = adapter

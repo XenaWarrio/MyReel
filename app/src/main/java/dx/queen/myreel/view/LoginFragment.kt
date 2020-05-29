@@ -35,19 +35,24 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val ac = activity as MainActivity
+
         val viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         loginBinding.loginViewModel = viewModel
 
         val emailError = Observer<Int> {
             loginBinding.emailSignIn.error = requireContext().resources.getText(it)
         }
+
         val passwordError = Observer<Int> {
             loginBinding.passwordSignIn.error = requireContext().resources.getText(it)
         }
+
         val fireBaseError = Observer<String> {
             makeText(context, it, Toast.LENGTH_LONG).show()
         }
+
         val emailNotConfirmed = Observer<Unit> {
             makeText(context, R.string.verifyEmailError, Toast.LENGTH_LONG).show()
         }

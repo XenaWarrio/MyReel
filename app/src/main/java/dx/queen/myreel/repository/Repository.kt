@@ -11,26 +11,26 @@ import dx.queen.myreel.models.Message
 
 class Repository {
 
-    private val fireBase = FireBase().apply {
-        messageLivaData.observeForever(messageObserver)
-    }
-
-
     private val workWithDatabase = WorkWithDatabase()
 
+    //registration or login feedback
     var authFailedForRegistration = MutableLiveData<String>()
     var authHaveToConfirmEmailForRegistration = MutableLiveData<Unit>()
-
     var emailNotConfirmedForLogin = MutableLiveData<Unit>()
     var authFireBaseFailedForLogin = MutableLiveData<String>()
     var authSucceedForLogin = MutableLiveData<Unit>()
 
+    //set observer that retrieve a message value by FireBase`s messageLiveData
+    private val fireBase = FireBase().apply {
+        messageLivaData.observeForever(messageObserver)
+    }
+    // observer that set message value to messageLiveData
     private val messageObserver = Observer<Message> {
         messageLiveData.value = it
     }
-
     var messageLiveData = MutableLiveData<Message>()
 
+    //Registration logic
     fun createNewUserRepository(
         emailForSaving: String,
         passwordForSaving: String,
@@ -49,6 +49,7 @@ class Repository {
         }
     }
 
+    //Login logic
     fun signIn(email: String, password: String) {
         fireBase.signIn(email, password)
 
@@ -64,12 +65,15 @@ class Repository {
         }
     }
 
+    // LoginViewModel calls this method for getting user
     fun getUserInformationFromFireBase() = fireBase.getUserInformationFromFireBase()
 
+    //LoginViewModel saves user that retrieve above to database
     suspend fun saveUserToDB(user: FullUserInformationForFireBase) {
         workWithDatabase.saveUserToDB(user)
     }
 
+    //Chat logic
     fun sendMessage(message: String, companionEmail: String) {
         val fireBaseCompanion = FireBase(companionEmail)
         fireBaseCompanion.sendMessage(message)

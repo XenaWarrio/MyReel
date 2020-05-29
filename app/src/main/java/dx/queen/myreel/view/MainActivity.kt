@@ -16,31 +16,29 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import dx.queen.myreel.R
 import dx.queen.myreel.broadcast.ConnectivityReceiver
-import dx.queen.myreel.view.rememberUser.SharedPreferencesIsUserRegister
 import dx.queen.myreel.viewModel.rvChats.ChatsItem
 
 class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityReceiverListener {
 
     private val registrationFragment = R.id.registrationFragment
 
-
-    private lateinit var wManager: WindowManager
     private lateinit var viewL: View
+
     private lateinit var navController: NavController
 
+    private lateinit var wManager: WindowManager
     private var isWindowVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        SharedPreferencesIsUserRegister.init(this)
         wManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         viewL = layoutInflater.inflate(R.layout.window_no_connection, null)
 
-        registerReceiver(
-            ConnectivityReceiver(), IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
-        )
+//        registerReceiver(
+//            ConnectivityReceiver(), IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+//        )
         navController = Navigation.findNavController(
             this,
             R.id.nav_host_fragment
@@ -109,6 +107,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         }
     }
 
+    // show window with no internet connection
     private fun showWindow() {
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,

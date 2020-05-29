@@ -12,7 +12,6 @@ object SharedPreferencesIsUserRegister {
         prefs = context.getSharedPreferences(APP_SETTINGS, Context.MODE_PRIVATE)
     }
 
-
     fun writeUserEmail(userID: String) {
         val prefsEditor: SharedPreferences.Editor = prefs.edit()
         with(prefsEditor) {
@@ -21,6 +20,6 @@ object SharedPreferencesIsUserRegister {
         }
     }
 
-    fun getUserEmail() = prefs.getString(USER_EMAIL, "")
+    fun getUserEmail(): String? = prefs.getString(USER_EMAIL, "")
 
 }

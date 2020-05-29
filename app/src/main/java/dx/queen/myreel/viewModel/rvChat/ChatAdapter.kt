@@ -39,7 +39,7 @@ class ChatAdapter : RecyclerView.Adapter<MessageViewHolder>() {
 class MessageViewHolder(private val binding: MessageInChatBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(text: String) {
-        binding.messageBetweenUsers.text = text // TODO remove the bang operator
+        binding.messageBetweenUsers.text = text
     }
 }
 

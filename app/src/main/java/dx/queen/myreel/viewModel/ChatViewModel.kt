@@ -14,7 +14,6 @@ class ChatViewModel(private val companionEmail: String) : ViewModel() {
     var clearTextField = MutableLiveData<String>()
 
     private val messageBetweenUsersObserver = Observer<Message> {
-
         messageBetweenUsers.value = it
     }
 

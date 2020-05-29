@@ -34,22 +34,22 @@ class ChatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val viewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
         binding.chatsViewModel = viewModel
-        binding.rvChatsRow.layoutManager = LinearLayoutManager(context)
-
-        val ac = activity as MainActivity
 
         val adapter = ChatsAdapter()
         binding.rvChatsRow.adapter = adapter
+        binding.rvChatsRow.layoutManager = LinearLayoutManager(context)
 
         val chatOnclick = Observer<ChatsItem> {
+            val ac = activity as MainActivity
             ac.openCertainChat(it)
         }
 
         adapter.clickOnItem.observe(viewLifecycleOwner, chatOnclick)
         adapter.updateList(viewModel.listOfChats)
-        viewModel.fetchCurrentUser()
+        viewModel.fetchCurrentUser()// TODO delete after testing
     }
 
 }
