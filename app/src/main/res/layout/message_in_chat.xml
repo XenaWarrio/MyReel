@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.Gravity" />
+
+        <variable
+            name="adapter"
+            type="dx.queen.myreel.viewModel.rvChat.ChatAdapter" />
+
+        <variable
+            name="message"
+            type="dx.queen.myreel.models.Message" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/message_between_users"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="@{adapter.currentUserEmail.equals(message.fromUser) ? Gravity.START : Gravity.END}"
+            android:maxWidth="240dp"
+            android:background="@drawable/message_companion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </LinearLayout>
+</layout>

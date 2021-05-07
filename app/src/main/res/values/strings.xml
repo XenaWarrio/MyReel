@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">MyReel</string>
+    <string name="already_have_an_account"> Уже зарегестрированы? </string>
+    <string name="have_no_account"> Ещё не зарегестрированы? </string>
+    <string name="register"> Зарегестрироваться </string>
+    <string name="select_photo"> Выбрать фото </string>
+    <string name="name"> имя </string>
+    <string name="email"> email </string>
+    <string name="password"> пароль </string>
+    <string name="dateOfBirth"> дата рождения </string>
+    <string name="sign_in"> Войти </string>
+    <string name="verifyEmail"> Пожалуйста зайдите в свою почту и потвердите свой email </string>
+    <string name="verifyEmailError"> Вы не потвердили свой email! </string>
+    <string name="no_connection"> нет подключения к интернету </string>
+
+    <string name="done"> готово </string>
+    <string name="back"> назад </string>
+
+    <string name="cant_be_empty"> не может быть пустым! </string>
+    <string name="ok">ok</string>
+    <string name="should_contains_more_symbols"> в поле должно быть больше символов! </string>
+    <string name="should_contains_dog">пропущен символ @  </string>
+    <string name="password_should_contains">пароль должен содержать буквы и цифры </string>
+
+    <string name="chats"> chats </string>
+    <string name="send_message"> отправить </string>
+    <string name="hint_message"> введите сообщение </string>
+
+
 </resources>

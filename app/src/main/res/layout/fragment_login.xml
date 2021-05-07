@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="loginViewModel"
+            type="dx.queen.myreel.viewModel.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/green"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image_view_My_Reel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/myreel"
+            app:layout_constraintBottom_toTopOf="@+id/email_sign_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/email_sign_in"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/rounded_corners_text"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:text="@={loginViewModel.email}"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_My_Reel" />
+
+        <EditText
+            android:id="@+id/password_sign_in"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/rounded_corners_text"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:text="@={loginViewModel.password}"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_sign_in" />
+
+        <Button
+            android:id="@+id/bt_sign_in_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="@android:dimen/notification_large_icon_height"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="@android:dimen/notification_large_icon_height"
+            android:background="@drawable/rounded_corners_button"
+            android:onClick="@{()-> loginViewModel.signIn()}"
+            android:text="@string/sign_in"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_sign_in" />
+
+        <TextView
+            android:id="@+id/have_no_registr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@android:dimen/notification_large_icon_height"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="@android:dimen/notification_large_icon_height"
+            android:onClick="@{()->loginViewModel.haveNoAccount()}"
+            android:text="@string/have_no_account"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bt_sign_in_button" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
